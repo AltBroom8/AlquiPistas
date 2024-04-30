@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./bootstrap.min.css" rel="stylesheet">
+    <link href="./login.css" rel="stylesheet">
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="container vh-100 d-flex">
+        <div class="col py-5 d-flex flex-column align-items-center justify-content-center  ">
+            <div id="content" class="bg-light cornerRadius col-md-5 principal">
+                <h2 class="fw-bold text-center mb-5 mt-2">Nombre del proyecto</h2>
+
+                <!--Aqui va el login-->
+                <div id="login" class="col-md-12  mt-2 ">
+                    <form action="#">
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="usuario" class="form-label text-center">Usuario</label>
+                            <div class="col-md-10">
+                                <input id="usernameLogin" type="text" class="form-control  " name="usuario">
+                            </div>
+                        </div>
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="password" class="form-label text-center">Contraseña</label>
+                            <div class="col-md-10">
+                                <input id="passwordLogin" type="password" class="form-control " name="password">
+                            </div>
+                            
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-center">
+                        <hr class="col-md-8 flex-column align-items-center">
+                    </div>
+                    <div id="botones1" class="d-flex flex-column align-items-center">
+                        <button id="actualLogin"  class="col-4 mb-3 btn btn-primary">Inicia sesión</button>
+                        <button id="loginCambio" class="col-4 mb-3 btn btn-success">Crear cuenta</button>
+                        <a href="#" class="mb-3">Olvidé mi contraseña</a>
+                    </div>
+                </div>
+
+                <!--Aqui va el registro-->
+
+                <div id="registro" class="col-md-12  mt-2 ocultar">
+                    <form >
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="nombre" class="form-label text-center">Nombre completo</label>
+                            <div class="col-md-10">
+                                <input id="nombreRegistro" type="text" class="form-control  " name="nombre">
+                            </div>
+                        </div>
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="username" class="form-label text-center">Usuario</label>
+                            <div class="col-md-10">
+                                <input id="usernameRegistro" type="text" class="form-control " name="username">
+                            </div>
+                            
+                        </div>
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="email" class="form-label text-center">Correo electrónico</label>
+                            <div class="col-md-10">
+                                <input id="emailRegistro" type="email" class="form-control" name="email">
+                            </div>
+                        </div>
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="password" class="form-label text-center">Contraseña</label>
+                            <div class="col-md-10">
+                                <input id="passwordRegistro" type="password" class="form-control" name="password">
+                            </div>
+                        </div>
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <label for="repPassword" class="form-label text-center mx-auto">Repetir contraseña</label>
+                            <div class="col-md-10">
+                            <input id="repPassword" type="password" class="form-control" name="repPassword">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-center">
+                        <hr class="col-md-8 flex-column align-items-center">
+                    </div>
+                    <div id="botones2" class="d-flex flex-column align-items-center">
+                        <button id="actualRegistro" class="col-4 mb-3 btn btn-primary">Registro</button>
+                        <button id="registroCambio" class="col-4 mb-3 btn btn-success">Inicia sesión</button>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+    </div>
+    <script src="bootstrap.bundle.min.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
