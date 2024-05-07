@@ -1,0 +1,10 @@
+{
+    "service": "gmail",
+    "auth": {
+        "type":"OAuth2",
+        "user": "alquilerdepistasgines@gmail.com",
+        "clientId": "775597794705-lqq619bf8m8ij5462ivgt61crrbsbtn5.apps.googleusercontent.com",
+        "clientSecret": "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",
+        "refreshToken": "1//04XpjsaLHr5SYCgYIARAAGAQSNwF-L9IrzexIIBvCwLoDHDGKvrBvb50LrKvSlWjO8UNR1gNy_DadfioUATixPqcjbms2KI4Xxc8"
+    }
+}

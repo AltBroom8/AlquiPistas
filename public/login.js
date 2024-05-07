@@ -1,3 +1,5 @@
+//NOMBRAMOS LOS BOTONES Y DIVS PERTINENTES
+
 const btn1 = document.getElementById("loginCambio");
 const btn2 = document.getElementById("registroCambio");
 const btn3 = document.getElementById("actualLogin");
@@ -5,6 +7,7 @@ const btn4 = document.getElementById("actualRegistro");
 const login = document.getElementById("login");
 const registro = document.getElementById("registro");
 
+//METODO PARA LA ANIMACION 1
 btn1.addEventListener("click", ()=>{
     registro.classList.remove("animar");
     login.classList.remove("animar2");
@@ -18,8 +21,12 @@ btn1.addEventListener("click", ()=>{
     },1000);
 });
 
-
+//METODO PARA LA ANIMACION 2
 btn2.addEventListener("click", ()=>{
+    const elemento = document.getElementById('miDiv');
+    if (elemento) {
+        elemento.parentNode.removeChild(elemento);
+    }
     registro.classList.add("animar");
     
     
@@ -37,6 +44,7 @@ btn2.addEventListener("click", ()=>{
     },1000);
 });
 
+//ENVIO DE DATOS AL LOGIN A LA BASE DE DATOS
 async function enviaDatosLogin(usuario, cont){
     const datos = {
         username: usuario,
@@ -57,24 +65,25 @@ async function enviaDatosLogin(usuario, cont){
 
         const data = await response.json();
         
-        // Aquí puedes comprobar si la respuesta es verdadera y retornar true si lo es
+    
         if (data === true) {
             return true;
         } else {
-            // Si la respuesta no es verdadera, puedes hacer algo más aquí, como lanzar un error o retornar false
+        
             return false;
         }
 
     } catch (error) {
         console.error('Error:', error);
-        // En caso de error, también puedes retornar false o lanzar el error
+
         return false;
     }
 }
 
 
-
+//BOTON PARA REALIZAR EL LOGIN Y CAMBIOS DE ESTILO SI NO ES CORRECTO
 btn3.addEventListener("click", ()=>{
+    
     const username = document.getElementById("usernameLogin");
     const password = document.getElementById("passwordLogin");
     if(username.value===''){
@@ -102,7 +111,7 @@ btn3.addEventListener("click", ()=>{
     });
     }
 });
-
+//SI EL USUARIO NO EXISTE LO NOTIFICA ESTE METODO(SE PUEDE HACER REGISTRO)
 async function userNoExiste(usuario){
     const datos = {
         username:usuario
@@ -128,7 +137,7 @@ async function userNoExiste(usuario){
         return false;
     }
 }
-
+//SI EL CORREO NO EXISTE LO NOTIFICA ESTE METODO(SE PUEDE HACER REGISTRO)
 async function correoNoExiste(mail){
     const datos = {
         correo:mail
@@ -154,7 +163,7 @@ async function correoNoExiste(mail){
         return false;
     }
 }
-
+//METODO QUE SOLICITA EL INSERT EN LA BASE DE DATOS
 async function realizaRegistro(nombre, user, email, password) {
     const datos = {
         name: nombre,
@@ -172,15 +181,31 @@ async function realizaRegistro(nombre, user, email, password) {
             body: JSON.stringify(datos)
         });
         console.log('Solicitud de registro enviada correctamente');
-        return true; // Indica que la solicitud se envió correctamente
+        return true; 
     } catch (error) {
         console.error('Error:', error);
-        return false; // Indica que hubo un error al enviar la solicitud
+        return false; 
     }
 }
 
-
+//ACCIONES DEL BOTON DE REGISTRO, REGEX,ETC...
 btn4.addEventListener('click',async ()=>{
+    const elemento = document.getElementById('miDiv');
+        if (elemento) {
+            elemento.parentNode.removeChild(elemento);
+        }
+    let nuevoDiv = document.createElement("div");
+    let texto = document.createElement("h6");
+    nuevoDiv.setAttribute('id', 'miDiv');
+    texto.innerHTML = `Requisitos para la contraseña:<br>
+        - Al menos 8 caracteres de longitud<br>
+        - Al menos una letra minúscula<br>
+        - Al menos una letra mayúscula<br>
+        - Al menos un dígito numérico<br>
+        - Al menos un carácter especial`;
+    nuevoDiv.appendChild(texto);
+    nuevoDiv.style.marginTop = "22vh";
+    let contenedor = document.getElementById("general");
     let todoCorrecto = true;
     let nombre = document.getElementById('nombreRegistro');
     let username = document.getElementById('usernameRegistro');
@@ -250,9 +275,7 @@ btn4.addEventListener('click',async ()=>{
         password.classList.add('bordeRojo');
         password.placeholder = 'No dejes la contraseña vacía';
         repite.value = '';
-        alert("Requisitos para la contraseña:\n\n- Al menos 8 caracteres de longitud\n-"+
-        " Al menos una letra minúscula\n- Al menos una letra mayúscula\n-"+
-        " Al menos un dígito numérico\n- Al menos un carácter especial");
+        contenedor.appendChild(nuevoDiv);
         todoCorrecto = false;
     }else if( !passRegex.test(password.value)){
         password.classList.add('bordeRojo');

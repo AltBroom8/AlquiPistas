@@ -1,6 +1,7 @@
 body {
     background: linear-gradient(to right, #ce4a5a, #c7c7c7);
     overflow: hidden;
+    min-height: 880px;
 }
 .principal{
     min-height: 80vh;
@@ -52,4 +53,21 @@ body {
 
 .bordeRojo::placeholder{
     color:rgb(255, 173, 173);
+}
+
+@media (max-width: 812px) {
+    h2{
+        font-size: large;
+    }
+    .cornerRadius{
+        border-radius: 4%;
+    }
+    
+}
+
+#miDiv {
+    background-color: rgb(223, 196, 156);
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
 }

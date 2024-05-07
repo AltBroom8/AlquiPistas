@@ -1,0 +1,32 @@
+/* Estilos personalizados */
+
+body {
+    background: linear-gradient(to right, #ce4a5a, #c7c7c7);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 32px;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border-color: #6c63ff;
+}
+
+.btn-primary:hover {
+    background-color: #5248ff;
+    border-color: #5248ff;
+}
+span{
+    font-weight: bold;
+}

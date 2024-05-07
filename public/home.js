@@ -1,4 +1,6 @@
 let usuario; 
+
+//FETCH PARA CONSULTAR LA BASE DE DATOS
 async function inicializa() {
     const url = '/inicializar';
     const opciones = {
@@ -21,6 +23,8 @@ async function inicializa() {
     }
 }
 
+//METODO QUE RECIBE EL NOMBRE DEL USUARIO
+
 async function obtenerUsuario() {
     try {
 
@@ -37,6 +41,7 @@ async function obtenerUsuario() {
     }
 }
 
+//CAMBIAMOS EL TEXTO TRAS RECIBIR LA INFORMACION
 obtenerUsuario().then(() => {
     const titulo = document.getElementById('titulo');
     titulo.innerText = `Bienvenido, ${usuario}`;
