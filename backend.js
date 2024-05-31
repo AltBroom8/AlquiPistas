@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const database = require('./database.js');
 const seguridad = require('./password.js');
+const multer = require('multer');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -11,6 +12,27 @@ const path = require('path');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const accountTransport = require("./account_transport.json");
+let tempId = -1;
+
+
+// Configura Multer para guardar archivos en una ubicación específica
+const multerConfig = (id) => ({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, 'public/images/imagenesUsuario'); // Directorio donde se guardarán los archivos
+        },
+        filename: (req, file, cb) => {
+            console.log(id);
+            const filename = `${id}.jpg`;
+            cb(null, filename);
+        }
+    })
+    
+});
+
+// Middleware para analizar el cuerpo de la solicitud como FormData
+const multerUpload =(id)=> multer(multerConfig(id)).single('archivo');
+
 
 
 //METODO QUE SETEA LA INFO PARA MANDAR EL CORREO
@@ -111,7 +133,12 @@ app.use(session({
 app.get('/home.html', (req, res) => {
     res.redirect('/error404');
 });
-
+app.get("/socio", (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.sendFile('./home.html', {root : __dirname});    
+})
 //Pagina de login
 app.get('/', (req, res) => {
     if(req.session.username){
@@ -174,6 +201,23 @@ app.get('/setPassword', async (req, res) => {
     });
     
 });
+
+app.get('/imagen', (req, res) => {
+
+    const id = req.query.id;
+    const ruta = path.join(__dirname, `public/images/imagenesUsuario/${id}.jpg`);
+    res.sendFile(ruta, (err) => {
+        if (err) {
+            // Si hay un error al enviar el archivo, envía una respuesta de error
+            console.error('Error al enviar el archivo:', err);
+            res.status(err.status || 500).send('Error al enviar el archivo');
+        } else {
+            console.log('Archivo enviado correctamente');
+        }
+    });
+});
+
+
 //Si ninguna ruta es correcta, redirecciono a esta web
 app.get('/error404', (req, res) => {
     res.status(404).send('Error 404: Página no encontrada');
@@ -254,6 +298,136 @@ app.post('/inicializar',  (req, res)=>{
     };
     res.json(datos);
 })
+
+app.post('/cuantosSocios', (req, res)=>{
+    let busqueda = req.body.busqueda;
+    let ordenar = req.body.ordenar;
+    let forma = req.body.forma;
+    database.numSocios(busqueda,ordenar,forma,(resultado)=>{
+        console.log('Se han detectado '+resultado+' resultados.');
+        res.json(resultado);
+    })
+    
+});
+
+app.post('/devuelveSocios', (req, res)=>{
+
+    let busqueda = req.body.busqueda;
+    let ordenar = req.body.ordenar;
+    console.log('ordenar por '+ordenar);
+    let forma = req.body.forma;
+    let pagina = req.body.pagina;
+    database.devuelveSocios(busqueda,ordenar,forma,pagina,(resultado)=>{
+        console.log('Se han detectado '+resultado+' resultados.');
+        res.json(resultado);
+    })
+    
+});
+
+app.post('/existeSocio',(req,res)=>{
+    let id = req.body.id;
+    console.log('el id es'+id);
+    database.existeSocio(id,(resultado)=>{
+        res.json(resultado);
+    });
+})
+
+app.post("/insertSocio",(req,res)=>{
+    /*
+    (username,nombre,apellidos,direccion,cp,fnac,email,iban,esSocio,tutorNum,
+    socioNum,fechaAlta,fechaBaja,callback
+        };
+    */
+    let username = req.body.username;
+    let nombre = req.body.nombre;
+    let apellidos = req.body.apellidos;
+    let direccion = req.body.direccion;
+    let cp = req.body.cp;
+    let fechaNacimiento = req.body.fechaNacimiento;
+    let poblacion = req.body.poblacion;
+    let email = req.body.email;
+    let iban = req.body.iban;
+    let esSocio = req.body.esSocio;
+    let tutorNum = req.body.tutorNum;
+    let socioNum = req.body.socioNum;
+    let fechaAlta = req.body.fechaAlta;
+    let fechaBaja = req.body.fechaBaja;
+    database.insertSocio(username,nombre,apellidos,direccion,poblacion,cp,fechaNacimiento,email,
+        iban,esSocio,tutorNum,socioNum,fechaAlta,fechaBaja,(resultado)=>{
+            res.send(resultado);
+        }
+    )
+})
+
+app.post('/getHijos', (req, res) => {
+    let id = req.body.id;
+    database.getHijos(id,(resultado) => {
+        res.json(resultado);
+    })
+});
+
+app.post('/getSocio', (req, res) => {
+    let id = req.body.id;
+    database.getSocio(id,(resultado,error) => {
+        res.json(resultado);
+    })
+});
+
+app.post('/updateSocio', (req, res) => {
+
+    let id =  req.body.id
+    let username =  req.body.username
+    let nombre =  req.body.nombre
+    let apellidos = req.body.apellidos
+    let direccion =  req.body.direccion
+    let poblacion =  req.body.poblacion
+    let cp = req.body.cp
+    let fnac = req.body.fnac
+    let email = req.body.email
+    let iban = req.body.iban
+    let socio = req.body.socio
+    let alta = req.body.alta
+    let fAlta = req.body.fAlta
+    let fBaja = req.body.fBaja
+
+    database.updateSocio(id,username,nombre,apellidos,direccion,poblacion,cp,
+    fnac,email,iban,socio,alta,fAlta,fBaja, (resultado)=>{
+            res.send(resultado);
+    })
+
+})
+
+app.post('/deleteSocio',(req, res)=>{
+    let id = req.body.id;
+    database.deleteSocio(id,(resultado)=>{
+        res.send(resultado);
+    })
+});
+
+app.post('/idMasAlto',(req, res)=>{
+    database.idMasAlto((resultado)=>{
+        res.json(resultado);
+    })
+})
+
+app.post('/test', (req, res) => {
+
+    res.json({ mensaje: 'El post funciona en java' });
+});
+
+
+app.post('/uploadFile', (req, res) => {
+    console.log('id es '+req.query.id);
+    const id = req.query.id;
+    multerUpload(id)(req, res, function(err) {
+        if (err) {
+            
+            return next(err);
+        }
+        res.send('Archivo subido exitosamente');
+    });
+    
+});
 
 
 

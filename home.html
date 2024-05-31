@@ -3,10 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="select2.min.css" rel="stylesheet">
+    <link href="home.css" rel="stylesheet">
+    <script src="jquery.min.js"></script>
+    <script src="select2.min.js"></script>
+    
     <title>Home</title>
 </head>
 <body>
-    <h1 id="titulo">HOLA, CARACOLA</h1>
+    <div class="aviso">
+        <div class="avisoVentana">
+            <h1 id="prompt">¿Estás seguro de eliminar a menganito?</h1>
+            <div class="btnEliminar">
+                <button id="cancelarEliminar">Cancelar</button>
+                <button id="aceptarEliminar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    <div id="nuevaVentana">
+        
+        <div class="popup">
+            
+            <div id="ocupaTodo">
+                <div id="sec1">
+                    <div class="fotoBusqueda">
+                        <img id="fondoBusqueda" src="images/profile.jpg" alt="fondo imagen">
+                        <button id="btnImagen"><img id="folder" src="images/media.svg" alt="Descripción de la imagen SVG"></button>
+                    </div>
+                    <div class="tutor">
+                        <h3>Tutor/a de:</h3>
+                        <select name="hijos" id="selectHijo" class="js-example-basic-single" style="min-width: 200px;">
+                            <option value="-1" selected>Vacío &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                                &nbsp; &nbsp; &nbsp;
+                            </option>
+                        </select>
+                        <button  id="ir">Ir</button>
+                    </div>
+                </div>
+                <div id="sec2">
+                    <div class="campos1">
+                        <label for="user">Username</label>
+                        <input type="text" name="user" id="usernameForm">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" name="nombre" id="nombreForm">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" name="apellidos" id="apellidosForm">
+                        <label for="dir">Dirección</label>
+                        <input type="text" name="dir" id="dirForm">
+                        <label for="poblacion">Población</label>
+                        <input type="text" name="poblacion" id="poblacionForm">
+                        <label for="cp" minlength="5" maxlength="5">Código Postal</label>
+                        <input type="number" name="cp" id="cpForm">
+                        <label for="fNac">Fecha de Nacimiento</label>
+                        <input type="date" name="fNac" id="fnacForm">
+
+                    </div>
+                    <div class="estado">
+                        <button disabled id="bajaBtn">
+                            <span>Baja</span>
+                            <img src="images/down.svg" alt="flecha hacia abajo">
+                        </button>
+                        <button disabled id="altaBtn">
+                            <span>Alta</span>
+                            <img src="images/up.svg" alt="flecha hacia arriba">
+                        </button>
+                        
+                    </div>
+                </div>
+                <div id="sec3">
+                    <div class="campos1">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="emailForm" maxlength="30">
+                        <label for="iban">IBAN</label>
+                        <input type="text" id="ibanForm">
+                        <label for="socio">Socio</label>
+                        <div class="choice" id="choice">
+                            <label>
+                                <span>Si</span>
+                                <input class="radio" id="r1" type="radio" name="socio" value="si">
+                            </label>
+                            <label>
+                                <span>No</span>
+                                <input class="radio" id="r2"  type="radio" name="socio" value="no">
+                            </label>
+                        </div>
+                        <label for="ntutor">Numero de Tutor (Opcional)</label>
+                        <input type="number" id="ntutorForm">
+                        <label for="nsocio">Numero de Socio</label>
+                        <input type="number" id="nsocioForm">
+                        <label for="fAlta">Fecha de Alta</label>
+                        <input type="date" name="fAlta" id="faltaForm">
+                        <label for="fBaja">Fecha de Baja</label>
+                        <input type="date" name="fBaja" id="fbajaForm">
+                    </div>
+                    <div class="bFinal">
+                        <button id="rechazar">Rechazar</button>
+                        <button id="aceptar">Aceptar</button>
+                        
+                    </div>
+                    <h2 id="aviso" style="color: rgb(250, 79, 79); display: none;">Rellena todos los campos y botones disponibles.</h2>
+                </div>
+                <div id="sec4">
+                    <button id="cierra"><img id="imgCierra" src="images/close.png" alt="Imagen para cerrar ventana">
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <header>
+        <div id="titulo">
+            <h3>AlquiPistas</h3>
+        </div>
+        <nav class="navbar">
+            <div  class="link">
+                <a href="#">Usuarios</a>
+            </div>
+            <div class="link">
+                <a href="#">Escuela</a>
+            </div>
+            <div class="link">
+                <a href="#">Usuarios por Escuela</a>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="main">
+            <div class="head">
+                <h2>Usuarios</h2>
+                <div id="paraBoton">
+                    <button id="addButton"><img src="images/Add.png" alt="añadir un socio"></button>
+                </div>
+                
+            </div>
+            <div class="recursos">
+                <div class="busqueda">
+                    <div class="buscar">
+                        <input id="buscarInput" type="text" placeholder="Buscar...">
+                        <button disabled><img id="imgBuscar" src="images/buscar.png" alt="buscar"></button>
+                    </div>
+                    
+                    <div class="ordenar">
+                        <select id="selectMenu" name="ordena" class="js-example-basic-single" style="min-width: 200px;">
+                            <option value="nombre" selected>Ordenar según nombre...</option>
+                            <option value="usuario">Ordenar según usuario...</option>
+                            <option value="antiguo" >Más antiguos primero...</option>
+                            <option value="nuevo">Más reciente primero...</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="listado" id="listado">
+                    <div class="usuario">
+                        <div class="info">
+                            <div class="imagen">
+                                <img src="images/profile.jpg" alt="Imagen del usuario">
+                            </div>
+                            <div class="datos">
+                                <h2 class="socioUser">Username</h2>
+                                <h4 class="socioNombre">Nombre Completo</h4>
+                                <h4 class="socioMail">unemail@correo.com</h4>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button class="top" ><img class="editar" src="images/edit.png" alt="Boton editar"></button>
+                            <button class="bottom" ><img class="eliminar" src="images/Trash.png" alt="Boton eliminar"></button>
+                        </div>
+                    </div>
+                    <div class="usuario">
+                        <div class="info">
+                            <div class="imagen">
+                                <img src="images/profile.jpg" alt="Imagen del usuario">
+                            </div>
+                            <div class="datos">
+                                <h2 class="socioUser">Username</h2>
+                                <h4 class="socioNombre">Nombre Completo</h4>
+                                <h4 class="socioMail">unemail@correo.com</h4>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button class="top" ><img class="editar" src="images/edit.png" alt="Boton editar"></button>
+                            <button class="bottom" ><img class="eliminar" src="images/Trash.png" alt="Boton eliminar"></button>
+                        </div>
+                    </div>
+                    <div class="usuario">
+                        <div class="info">
+                            <div class="imagen">
+                                <img src="images/profile.jpg" alt="Imagen del usuario">
+                            </div>
+                            <div class="datos">
+                                <h2 class="socioUser">Username</h2>
+                                <h4 class="socioNombre">Nombre Completo</h4>
+                                <h4 class="socioMail">unemail@correo.com</h4>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button class="top" ><img class="editar" src="images/edit.png" alt="Boton editar"></button>
+                            <button class="bottom" ><img class="eliminar" src="images/Trash.png" alt="Boton eliminar"></button>
+                        </div>
+                    </div><div class="usuario">
+                        <div class="info">
+                            <div class="imagen">
+                                <img src="images/profile.jpg" alt="Imagen del usuario">
+                            </div>
+                            <div class="datos">
+                                <h2 class="socioUser">Username</h2>
+                                <h4 class="socioNombre">Nombre Completo</h4>
+                                <h4 class="socioMail">unemail@correo.com</h4>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button class="top" ><img class="editar" src="images/edit.png" alt="Boton editar"></button>
+                            <button class="bottom" ><img class="eliminar" src="images/Trash.png" alt="Boton eliminar"></button>
+                        </div>
+                    </div><div class="usuario">
+                        <div class="info">
+                            <div class="imagen">
+                                <img src="images/profile.jpg" alt="Imagen del socio">
+                            </div>
+                            <div class="datos">
+                                <h2 class="socioUser">Username</h2>
+                                <h4 class="socioNombre">Nombre Completo</h4>
+                                <h4 class="socioMail">unemail@correo.com</h4>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <button class="top" ><img class="editar" src="images/edit.png" alt="Boton editar"></button>
+                            <button class="bottom" ><img class="eliminar" src="images/Trash.png" alt="Boton eliminar"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="paginador">
+            <div id="numeros">
+                <button class="actual pag">1</button>
+                <button class="otro pag">2</button>
+                <button class="otro pag">3</button>
+                <button class="otro pag">4</button>
+            </div>
+        </div>
+    </div>
     <script src="home.js"></script>
 </body>
 </html>

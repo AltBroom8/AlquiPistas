@@ -236,9 +236,266 @@ async function updatePassword(email, password) {
     }
 }
 
+async function numSocios(busqueda, ordenar, forma, callback) {
+    // Validar el valor de `forma`
+    if (forma !== 'ASC' && forma !== 'DESC') {
+        console.error('El valor de `forma` debe ser "ASC" o "DESC"');
+        callback(-1);
+        return;
+    }
+
+    // Lista de columnas válidas para ordenar
+    const columnasValidas = ['username', 'nombre', 'apellidos', 'email','fAlta']; 
+    // Validar el valor de `ordenar`
+    if (!columnasValidas.includes(ordenar)) {
+        console.error('El valor de `ordenar` no es válido');
+        callback(-1);
+        return;
+    }
+    let miOrderBy;
+    if (ordenar === 'nombre') {
+        miOrderBy = `CONCAT(nombre, ' ', apellidos) ${forma}`;
+    } else {
+        miOrderBy = `${ordenar} ${forma}`;
+    }
+    // Construir la consulta
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE username LIKE ? OR CONCAT(nombre, ' ', apellidos) LIKE ? OR email LIKE ? 
+        AND alta = true
+        ORDER BY ${miOrderBy}`;
+
+    // Preparar los valores para los parámetros LIKE
+    const valores = [`%${busqueda}%`, `%${busqueda}%`, `%${busqueda}%`];
+
+    // Ejecutar la consulta
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(-1);
+            return;
+        }
+        if (results.length > 0) {
+            console.log('Hay ' + results.length + ' socios');
+            callback(results.length);
+        } else {
+            console.log('No hay socios');
+            callback(0);
+        }
+    });
+}
+
+async function devuelveSocios(busqueda, ordenar, forma,actual,callback){
+
+    let userPerPage = 12;
+    // Validar el valor de `forma`
+    if (forma !== 'ASC' && forma !== 'DESC') {
+        console.error('El valor de `forma` debe ser "ASC" o "DESC"');
+        callback(-1);
+        return;
+    }
+
+    // Lista de columnas válidas para ordenar
+    const columnasValidas = ['username', 'nombre', 'apellidos', 'email','fAlta']; 
+    // Validar el valor de `ordenar`
+    if (!columnasValidas.includes(ordenar)) {
+        console.error('El valor de `ordenar` no es válido');
+        callback(-1);
+        return;
+    }
+    let miOrderBy;
+    if (ordenar === 'nombre') {
+        miOrderBy = `CONCAT(nombre, ' ', apellidos) ${forma}`;
+    } else {
+        miOrderBy = `${ordenar} ${forma}`;
+    }
+    
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE (username LIKE ? OR CONCAT(nombre, ' ', apellidos) LIKE ? OR email LIKE ? )
+        AND alta = TRUE
+        ORDER BY ${miOrderBy} LIMIT ${(actual-1)*userPerPage},${userPerPage}`;
+
+    // Preparar los valores para los parámetros LIKE
+    const valores = [`%${busqueda}%`, `%${busqueda}%`, `%${busqueda}%`];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(error);
+            return;
+        }
+        if (results.length > 0) {
+            console.log('Hay ' + results.length + ' socios');
+            callback(results);
+        } else {
+            console.log('No hay socios');
+            callback(null);
+        }
+    });
+
+
+
+}
+
+async function existeSocio(id, callback) {
+
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE id = ?`;
+
+    const valores = [id];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(-1);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(true);
+        } else {
+            console.log('No hay socios');
+            callback(false);
+        }
+    });
+}
+
+
+async function insertSocio(username,nombre,apellidos,direccion,poblacion,cp,fnac,email,iban,esSocio,tutorNum,
+    socioNum,fechaAlta,fechaBaja,callback
+){
+
+    const consulta = `
+    INSERT INTO Socios (id,username, nombre, apellidos, direccion,poblacion, codigoPostal, email, fNac, iban, socio,
+        idTutor, fAlta, fBaja, alta) VALUES
+    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    `;
+    const valores = [socioNum,username,nombre,apellidos,direccion,poblacion,cp,email,fnac,iban,esSocio,tutorNum,fechaAlta,
+        fechaBaja,true
+    ]
+    console.log("SocioNum: " + socioNum);
+    
+    conexion.query(consulta, valores, 
+        (error, result) => {
+            if (error) {
+            console.error('Error al insertar socio:', error);
+            callback(false);
+        } else {
+            console.log('Socio insertado correctamente')
+            callback(true);
+        }
+        });
+
+}
+
+async function getHijos(id,callback){
+    const consulta = `
+    SELECT * FROM socios 
+    WHERE idTutor = ?`;
+
+const valores = [id];
+
+conexion.query(consulta, valores, (error, results) => {
+    if (error) {
+        console.error('Error al realizar la consulta:', error);
+        callback(null);
+        return;
+    }
+    if (results.length > 0) {
+        
+        callback(results);
+    } else {
+        console.log('No hay socios');
+        callback(null);
+    }
+});
+}
+
+async function getSocio(id, callback) {
+
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE id = ?`;
+
+    const valores = [id];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results[0],null);
+        } else {
+            console.log('No hay socios');
+            callback(null,null);
+        }
+    });
+}
+
+async function updateSocio(id,username,nombre,apellidos,direccion,poblacion,cp,
+    fnac,email,IBAN,socio,alta,fAlta,fBaja, callback) {
+
+    const consulta = `
+        Update socios SET username = ?,nombre  = ?,apellidos = ?,direccion = ?,poblacion = ?,codigoPostal = ?,
+        email = ?,fNac = ?, iban = ?,socio = ?,alta = ?, fAlta = ?,fBaja = ? WHERE id = ?
+    `;
+
+    const valores = [username,nombre,apellidos,direccion,poblacion,cp,email,fnac,IBAN,socio,alta,fAlta,fBaja,id];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(false);
+        } else {
+            console.log('Se ha actualizado el socio');
+            callback(true);
+        }
+    });
+}
+
+async function deleteSocio(id, callback) {
+
+    const consulta = `
+    UPDATE socios 
+    SET alta = false,
+    fBaja = NOW() 
+    WHERE id = ?;`;
+
+    const valores = [id];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(false);
+        } else {
+            console.log('Se ha eliminado el socio');
+            callback(true);
+        }
+    });
+}
+
+async function idMasAlto(callback){
+    const consulta = `SELECT MAX(id) AS max_id FROM socios;`;
+
+    conexion.query(consulta, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(false);
+        } else {
+            console.log('El ID más alto es:', results[0].max_id);
+            callback(results[0].max_id);
+        }
+    });
+}
 
 
 
 module.exports = { loginCorrecto,compUser,compMail,registro,mailPorUsername,insertaToken,buscarToken,correoExiste,
-    cambiarValidez, updatePassword,conectar};
+    cambiarValidez, updatePassword,conectar,numSocios,devuelveSocios,existeSocio,insertSocio,getHijos,getSocio,updateSocio,
+    deleteSocio,idMasAlto};
 

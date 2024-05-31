@@ -1,0 +1,785 @@
+@font-face {
+    font-family: 'Gelasio';
+    src: url('fonts/Gelasio-Regular.ttf')format('truetype');
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+body{
+    width: 100%;
+    height: 100%;
+    margin:0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 0;
+    
+}
+
+header{
+    background-color: red;
+    width: 100%;
+    height: 8vh;
+    margin: 0 auto;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    background-color: #D5E6F9;
+    z-index: 7;
+    
+}
+
+#titulo{
+    display: flex;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+#titulo h3{
+    margin-left: 30px;
+    font-size: 2rem;
+    font-weight: light;
+}
+
+.navbar{
+    display: flex;
+
+}
+
+.link{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: #B5D8FF;
+}
+.link a{
+    color: black;
+    text-decoration: none;
+    padding: 1vw;
+    font-size: 1.05vw;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    
+}
+.link:first-child{
+    background-color: #D9CEF9;
+}
+.link:last-child{
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+
+.link:hover{
+    cursor: pointer;
+    background-color: #ffc3d5;
+}
+
+#fotoPerfil{
+    
+    width: 2.5vw;
+    height: 2.5vw;
+    border-radius: 50px;
+    border-style: dashed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+#btnPerfil{
+    
+    background: transparent;
+    border: none;
+    
+}
+#btnPerfil:hover{
+    cursor: pointer;
+}
+
+#btnPerfilImg{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    flex-grow: 1; 
+    position: absolute; 
+    flex-direction: column;
+    background-image: linear-gradient(to bottom,#D9CEF9 0%, #FFFFFF 20% );
+    top: 8vh; 
+    left: 0;
+    right: 0;
+    bottom: 0; 
+
+}
+
+.main {
+    width: 70%; 
+    height: 80%; 
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+
+.head {
+    /*background: red;*/
+    width: 80%;
+    height: 12%;
+    border-bottom: 2px solid black;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-end; 
+    order:1;
+}
+
+.head h2 {
+    margin: 0; 
+    font-family: 'Gelasio', sans-serif;
+    font-size: 38px;
+    margin-left: 0.5vw;
+    font-weight: normal;
+}
+#paraBoton{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+#paraBoton button{
+    margin:0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00A42E;
+    border:none;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-top: 20px;
+    
+}
+
+#paraBoton button:hover{
+    cursor: pointer;
+    background-color: rgb(3, 182, 53);
+}
+
+.recursos{
+    width: 80%;
+    /*background-color: brown;*/
+    order:2;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    
+}
+
+.busqueda{
+    /*background: grey;*/
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.buscar{
+    margin-left: 1%;
+    height:fit-content;
+    /*background-color: blueviolet;*/
+    display: flex;
+    align-items: center;
+}
+.buscar input{
+    
+    min-height:30px;
+    min-width:225px ;
+    border:none;
+    margin:0;
+    font-size: 15px;
+    border-radius: 10px;
+    outline: none;
+    background-color: #f0f0f0;
+}
+.buscar button{
+    margin:0;
+    background: transparent;
+    border:none;
+    height:32px;
+    width:32px ;
+    border-radius: 10px;
+    position: relative;
+    right:12%;
+    top:100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#imgBuscar {
+    width: 1vw;
+    height: 1vw;
+}
+
+.ordenar{
+    margin-right: 2%;
+}
+#selectMenu{
+    min-width: 200px;
+    
+}
+
+.listado{
+    
+    /*background-color: orange;*/
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}
+.listado::-webkit-scrollbar {
+    width: 0; 
+}
+
+.usuario{
+    width: 80%;
+    /*background-color: rgb(40, 156, 118);*/
+    min-height: 125px;
+    margin-top: 50px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 0.5px solid black;
+    background-color: #e6e6e6;
+    z-index: 11;
+    margin-bottom: 1%;
+
+    
+}
+.info{
+    margin-left: 3%;
+    display: flex;
+    align-items: center;
+}
+.imagen{
+    width: 60%;
+    height: 80%;
+    border-radius: 20px;
+    
+}
+
+.imagen img {
+    width: 80px; 
+    height: 100px; 
+    border-radius: 20px;
+    object-fit: cover; 
+}
+
+.datos {
+    display: inline-block;
+    overflow: hidden;
+    height: 70%;
+    min-width: 100%;
+    width: min-content;
+    margin-left: 1vw;
+    box-sizing: border-box; /* Incluye los márgenes y rellenos en el tamaño total del elemento */
+}
+
+.datos h2, .datos h4 {
+    margin: 5px 0; 
+}
+
+.datos h2 {
+    font-family: 'Gelasio',sans-serif;
+}
+
+.datos h4 {
+    font-family: 'Gelasio',sans-serif;
+    color: #9c9c9c;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 3%;
+}
+.botones button{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 5px;
+}
+.editar , .eliminar{
+    width: 30px;
+    height: 30px;
+}
+.top{
+    background-color: #adcbee;
+}
+.top:hover{
+    background-color: #c4d8ee;
+}
+.bottom{
+    background-color: #e98282
+}
+.bottom:hover{
+    background-color: #FFA6A6;
+}
+
+
+.botones button:hover{
+    cursor: pointer;
+}
+
+.paginador{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+}
+#numeros{
+    margin-top:50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+
+    
+}
+#numeros button{
+    margin: 0 10px 0 10px;
+    width: 2vw;
+    height: 2vw;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+
+
+.actual{
+    border: none;
+    background-color: #D9CEF9;
+    border: 1px solid black;
+}
+.otro{
+    border: none;
+    background-color: #D5E6F9;
+    border-radius: 20px;
+}
+.otro:hover{
+    cursor: pointer;
+    background-color: #D9CEF9;
+}
+
+#nuevaVentana{
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    
+}
+
+.popup{
+    position: relative;
+    width: 90%;
+    height: 90%;
+    border: 3px dashed black;
+    border-radius: 10px;
+    background-color: rgb(235, 235, 235);
+}
+
+@keyframes zoomIn {
+    0%{
+        transform: scale(0);
+    }
+    100%{
+        transform: scale(1);
+    }
+    
+} 
+@keyframes zoomOut {
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(0);
+    }
+    
+}
+
+.aparece{
+    display:flex;
+    animation: zoomIn 0.5s ease-in-out  forwards;
+
+}
+
+.desaparece{
+    
+    animation: zoomOut 0.5s ease-in forwards;
+    
+
+}
+#segundo{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    display: flex;
+}
+
+
+#cierra{
+    position: absolute;
+    width: 2vw;
+    height: 2vw;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: #e76060;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5vw;
+    margin-top: 0.5vw;
+}
+#imgCierra{
+    width: 1.5vw;
+    height: 1.5vw;
+}
+#cierra:hover{
+    cursor: pointer;
+    background-color: #e69797;
+}
+
+#ocupaTodo{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+#sec1,#sec2,#sec3{
+    width: 32%;
+    height: 100%;
+}
+#sec4{
+    margin-left: 1vw;
+    align-items: end;
+}
+
+
+
+#sec1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+}
+
+.fotoBusqueda{
+    position: relative;
+    border-radius: 15px;
+    width: 80%;
+    height: 60%;
+    border: solid 3px black;
+    z-index: 12;
+    overflow: hidden;
+    background-color: #9c9c9c;
+
+
+}
+
+.fotoBusqueda button{
+    background: none;
+    position:absolute;
+    border:none;
+    height: 100%;
+    width: 100%;
+    z-index: 13;
+    
+}
+
+.fotoBusqueda button:hover{
+    cursor:pointer;
+}
+
+#folder{
+    height:5vw ;
+    width: 5vw;
+    opacity: 0;
+}
+
+#fondoBusqueda{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 12;
+    
+    
+}
+
+#ir{
+    min-height: 1.5vw;
+    min-width: 1.5vw;
+    background-color: #adcbee;
+    border-radius:4px;
+    border: none;
+}
+
+#ir:hover{
+    cursor:pointer;
+    
+}
+
+#sec2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.campos1 {
+    background-color: transparent;
+    padding: 15px; 
+    border:none;
+    display: flex; 
+    flex-direction: column; 
+    height: 65%;
+    width: 70%;
+}
+
+.campos1 label {
+    font-weight: bold; 
+    margin-bottom:2%; 
+}
+
+.campos1 input {
+    padding: 5px;
+    border: 1px solid #ccc; 
+    margin-bottom: 5%; 
+    min-height: 20px;
+}
+
+.campos1 input:focus {
+    background-color: #dbe6f3;
+}
+.estado{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.estado button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20%;
+    margin-left: 20%;
+    padding: 10%;
+    font-size: larger;
+    border: 0.5px solid rgb(177, 177, 177);
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+
+
+.estado button:first-child{
+    background-color: #d87f7f;
+}
+
+.estado button:nth-child(2){
+    background-color: #7fd898;
+}
+
+.choice{
+    display: flex;
+    flex-direction: row;
+    font-family: Arial, Helvetica, sans-serif, Times, serif, Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 5%;
+}
+.choice label{
+    margin-left: 20%;
+}
+
+.radio{
+    transform: scale(1.5);
+    background-color: #dbe6f3;
+}
+
+#r1{
+    accent-color: #7fd898;
+    
+}
+
+.radio:nth-child(2){
+    accent-color: #d87f7f;
+}
+#r1:hover,#r2:hover{
+    cursor: pointer;
+}
+
+
+#sec3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bFinal{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: 50%;
+    height: 10%;
+}
+
+.bFinal button{
+    width: 40%;
+    height: 50%;
+}
+
+#aceptar{
+    background-color: #7577ff;
+    border-radius: 10px;
+    color: white;
+}
+
+#rechazar{
+    background-color: white;
+    border-radius: 10px;
+    color: #7577ff;
+}
+
+.bFinal #aceptar:hover,
+.bFinal #rechazar:hover {
+    background-color: #ffe2b7;
+    cursor: pointer;
+    color: black;
+}
+
+.aviso{
+    min-height: 100vh;
+    min-width: 100vh;
+    
+    z-index: 25;
+    align-items: center;
+    justify-content: center;
+    display:none;
+}
+.avisoVentana{
+    width: 30vw;
+    height: 30vh;
+    background-color: rgb(255, 215, 215);
+    text-align: center;
+    border-radius: 5vh;
+    color: black;
+    font-family: 'Gelasio',sans-serif;
+    font-size: small;
+    border: solid black 1px;
+
+}
+
+.btnEliminar {
+    display: flex; 
+    height: 70%;
+    justify-content: center;
+    align-items: end;
+    
+
+}
+
+.btnEliminar button {
+    font-family: 'Arial', sans-serif; 
+    padding: 10px 20px; 
+    border: none; 
+    width: 20%;
+    height: 20%;
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.btnEliminar button:first-of-type {
+    background-color: #f44336; 
+    color: white; 
+}
+
+.btnEliminar button:first-of-type:hover {
+    background-color: #d32f2f;
+}
+
+.btnEliminar button:last-of-type {
+    margin-left: 4vh;
+    background-color: #4CAF50; 
+    color: white; 
+}
+
+.btnEliminar button:last-of-type:hover {
+    background-color: #388E3C; 
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+}
+
+.entra{
+    
+    animation: slideInFromRight 0.5s ease-in-out  forwards;
+}
+
+.sale{
+    animation: slideOutToLeft 0.5s ease-in-out  forwards;
+}

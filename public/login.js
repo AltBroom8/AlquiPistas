@@ -130,7 +130,7 @@ async function userNoExiste(usuario){
         }
 
         const data = await response.json();
-        console.log('data es '+data)
+        console.log('data es ', JSON.stringify(data));
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -190,22 +190,6 @@ async function realizaRegistro(nombre, user, email, password) {
 
 //ACCIONES DEL BOTON DE REGISTRO, REGEX,ETC...
 btn4.addEventListener('click',async ()=>{
-    const elemento = document.getElementById('miDiv');
-        if (elemento) {
-            elemento.parentNode.removeChild(elemento);
-        }
-    let nuevoDiv = document.createElement("div");
-    let texto = document.createElement("h6");
-    nuevoDiv.setAttribute('id', 'miDiv');
-    texto.innerHTML = `Requisitos para la contraseña:<br>
-        - Al menos 8 caracteres de longitud<br>
-        - Al menos una letra minúscula<br>
-        - Al menos una letra mayúscula<br>
-        - Al menos un dígito numérico<br>
-        - Al menos un carácter especial`;
-    nuevoDiv.appendChild(texto);
-    nuevoDiv.style.marginTop = "22vh";
-    let contenedor = document.getElementById("general");
     let todoCorrecto = true;
     let nombre = document.getElementById('nombreRegistro');
     let username = document.getElementById('usernameRegistro');
@@ -275,23 +259,32 @@ btn4.addEventListener('click',async ()=>{
         password.classList.add('bordeRojo');
         password.placeholder = 'No dejes la contraseña vacía';
         repite.value = '';
-        contenedor.appendChild(nuevoDiv);
         todoCorrecto = false;
     }else if( !passRegex.test(password.value)){
+        todoCorrecto = false;
+        password.validity.valid = todoCorrecto;
+        password.placeholder = 'Contraseña inválida';
         password.classList.add('bordeRojo');
-        password.placeholder = 'Introduce una contraseña válida...';
         password.value = '';
         repite.value = '';
-        alert("Requisitos para la contraseña:\n\n- Al menos 8 caracteres de longitud\n-"+
+        let msg = "Requisitos para la contraseña:\n- Al menos 8 caracteres de longitud\n-"+
         " Al menos una letra minúscula\n- Al menos una letra mayúscula\n-"+
-        " Al menos un dígito numérico\n- Al menos un carácter especial");
-        todoCorrecto = false;
+        " Al menos un dígito numérico\n- Al menos un carácter especial";
+        password.setCustomValidity(msg);
+        password.reportValidity();
+        
     }else{
         password.classList.remove('bordeRojo');
         password.placeholder = '';
     }
 
-    if(!(repite.value === password.value)){
+
+    if(repite.value === ''){
+        repite.classList.add('bordeRojo');
+        repite.placeholder = 'No dejes la contraseña vacía';
+        todoCorrecto = false;
+    }
+    else if(!(repite.value === password.value)){
         repite.classList.add('bordeRojo');
         repite.placeholder = 'Las contraseñas deben ser iguales';
         repite.value = '';
