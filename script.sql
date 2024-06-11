@@ -38,12 +38,50 @@ CREATE TABLE Socios(
     fBaja DATE,
     alta BOOLEAN NOT NULL,
     FOREIGN KEY (idTutor) REFERENCES Socios(id)
-)
+);
 ALTER TABLE Socios
 ADD COLUMN username VARCHAR(255) NOT NULL
 
 ALTER TABLE Socios
 ADD COLUMN poblacion VARCHAR(255) NOT NULL
+
+CREATE TABLE categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100)
+);
+
+CREATE TABLE escuela (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    inicio_inscripcion DATE NOT NULL,
+    fin_inscripcion DATE NOT NULL,
+    edad_min INT,
+    edad_max INT,
+    categoria INT,
+    FOREIGN KEY (categoria) REFERENCES categoria(id)
+);
+
+ALTER TABLE escuela
+ADD COLUMN eliminado BOOLEAN NOT NULL DEFAULT false;
+
+
+CREATE TABLE usuario_escuela (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    escuela_id INT,
+    usuario_id INT,
+    FOREIGN KEY (escuela_id) REFERENCES escuela(id),
+    FOREIGN KEY (usuario_id) REFERENCES Socios(id)
+);
+ALTER TABLE usuario_escuela
+ADD COLUMN eliminado BOOLEAN NOT NULL DEFAULT false;
+
+
+
+
+
+
 
 INSERT INTO Usuario (nombre_completo, username, contraseña, correo) VALUES ('Nombre Apellido', 'username123', 'contraseña123', 'correo@gmail.com');
 
@@ -80,3 +118,103 @@ VALUES
 (28,'user28', 'Lucía', 'García Martínez', 'Calle Mayor 40', '28019', 'lucia.garcia@example.com', '1990-07-17', 'ES7921000813610123456716', TRUE, 24, '2022-09-08', NULL, TRUE),
 (29,'user29', 'Jorge', 'Fernández López', 'Calle Atocha 45', '28020', 'jorge.fernandez@example.com', '1987-04-11', 'ES7921000813610123456717', TRUE, 25, '2022-09-09', NULL, TRUE),
 (30,'user30', 'Andrea', 'Martínez Sánchez', 'Calle Gran Vía 70', '28021', 'andrea.martinez@example.com', '1991-11-25', 'ES7921000813610123456718', TRUE, 26, '2022-09-10', NULL, TRUE);
+
+
+INSERT INTO categoria (nombre) VALUES ('Natación');
+INSERT INTO categoria (nombre) VALUES ('Fútbol');
+INSERT INTO categoria (nombre) VALUES ('Baloncesto');
+INSERT INTO categoria (nombre) VALUES ('Tenis');
+INSERT INTO categoria (nombre) VALUES ('Atletismo');
+INSERT INTO categoria (nombre) VALUES ('Voleibol');
+INSERT INTO categoria (nombre) VALUES ('Gimnasia');
+INSERT INTO categoria (nombre) VALUES ('Karate');
+INSERT INTO categoria (nombre) VALUES ('Judo');
+INSERT INTO categoria (nombre) VALUES ('Ciclismo');
+INSERT INTO categoria (nombre) VALUES ('Boxeo');
+INSERT INTO categoria (nombre) VALUES ('Esgrima');
+INSERT INTO categoria (nombre) VALUES ('Rugby');
+INSERT INTO categoria (nombre) VALUES ('Hockey');
+INSERT INTO categoria (nombre) VALUES ('Escalada');
+INSERT INTO categoria (nombre) VALUES ('Remo');
+INSERT INTO categoria (nombre) VALUES ('Patinaje');
+INSERT INTO categoria (nombre) VALUES ('Bádminton');
+INSERT INTO categoria (nombre) VALUES ('Golf');
+INSERT INTO categoria (nombre) VALUES ('Surf');
+
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Escuela de Natación', '2024-07-01', '2024-07-31', '2024-06-01', '2024-06-30', 6, 12, 1);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Academia de Fútbol', '2024-08-01', '2024-08-31', '2024-07-01', '2024-07-31', 8, 15, 2);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Club de Baloncesto', '2024-09-01', '2024-09-30', '2024-08-01', '2024-08-31', 10, 16, 3);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Escuela de Tenis', '2024-10-01', '2024-10-31', '2024-09-01', '2024-09-30', 7, 14, 4);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Centro de Atletismo', '2024-11-01', '2024-11-30', '2024-10-01', '2024-10-31', 12, 18, 5);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Academia de Voleibol', '2024-12-01', '2024-12-31', '2024-11-01', '2024-11-30', 9, 16, 6);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Gimnasio Infantil', '2024-06-01', '2024-06-30', '2024-05-01', '2024-05-31', 4, 10, 7);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Dojo de Karate', '2024-07-15', '2024-08-15', '2024-06-15', '2024-07-14', 8, 14, 8);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Academia de Judo', '2024-08-01', '2024-08-31', '2024-07-01', '2024-07-31', 7, 13, 9);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Escuela de Ciclismo', '2024-09-01', '2024-09-30', '2024-08-01', '2024-08-31', 10, 17, 10);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Club de Boxeo', '2024-10-01', '2024-10-31', '2024-09-01', '2024-09-30', 14, 18, 11);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Escuela de Esgrima', '2024-11-01', '2024-11-30', '2024-10-01', '2024-10-31', 12, 18, 12);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Academia de Rugby', '2024-12-01', '2024-12-31', '2024-11-01', '2024-11-30', 10, 16, 13);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Escuela de Hockey', '2024-06-01', '2024-06-30', '2024-05-01', '2024-05-31', 8, 14, 14);
+
+INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)
+VALUES ('Centro de Escalada', '2024-07-01', '2024-07-31', '2024-06-01', '2024-06-30', 9, 15, 15);
+
+
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (1, 1); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (1, 2); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (2, 3); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (2, 4); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (3, 5); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (3, 6); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (4, 7); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (4, 8); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (5, 9); 
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (5, 10);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (6, 11);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (6, 12);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (7, 13);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (7, 14);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (8, 15);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (8, 16);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (9, 17);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (9, 18);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (10, 19);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (10, 20);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (11, 21);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (11, 22);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (12, 23);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (12, 24);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (13, 25);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (13, 26);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (14, 27);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (14, 28);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (15, 29);
+INSERT INTO usuario_escuela (escuela_id, usuario_id) VALUES (15, 30);

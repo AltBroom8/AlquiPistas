@@ -493,9 +493,211 @@ async function idMasAlto(callback){
     });
 }
 
+async function getEscuelas(callback){
+
+    const consulta = "SELECT E.id AS id,E.nombre AS nombre, "+
+    "E.fecha_inicio as fecha_inicio, E.fecha_fin as fecha_fin, "+
+    "E.inicio_inscripcion AS inicio_inscripcion, E.fin_inscripcion as fin_inscripcion, "+
+    "E.edad_min as edad_min, E.edad_max as edad_max,E.categoria as categoria, "+
+    "C.nombre_categoria as nombre_categoria "+
+    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.ID "+
+    "WHERE ELIMINADO = FALSE";
+
+    conexion.query(consulta, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results,null);
+        } else {
+            console.log('No hay socios');
+            callback(null,null);
+        }
+    });
+
+}
+
+async function getEscuelasPag(actual,callback){
+    let escuelaPerPage = 5;
+    const consulta = "SELECT E.id AS id,E.nombre AS nombre, "+
+    "E.fecha_inicio as fecha_inicio, E.fecha_fin as fecha_fin, "+
+    "E.inicio_inscripcion AS inicio_inscripcion, E.fin_inscripcion as fin_inscripcion, "+
+    "E.edad_min as edad_min, E.edad_max as edad_max,E.categoria as categoria, "+
+    "C.nombre_categoria as nombre_categoria "+
+    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.ID "+
+    "WHERE ELIMINADO = FALSE "+
+    `LIMIT ${(actual-1)*escuelaPerPage},${escuelaPerPage};`;
+
+    conexion.query(consulta, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results,null);
+        } else {
+            console.log('No hay socios');
+            callback(null,null);
+        }
+    });
+}
+
+async function deleteEscuela(id,callback) {
+    const query = "UPDATE ESCUELA SET ELIMINADO = TRUE WHERE ID = ?"
+    const valores = [id];
+    conexion.query(query,valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(false);
+        } else {
+            console.log('Se ha eliminado el socio');
+            callback(true);
+        }
+    })
+}
+
+async function getCategorias(callback){
+
+    const consulta = "SELECT * FROM  CATEGORIA ORDER BY nombre_categoria ASC";
+
+    conexion.query(consulta, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results,null);
+        } else {
+            console.log('No hay categorias');
+            callback(null,null);
+        }
+    });
+
+}
+
+async function insertaEscuela(nombre, categoria,ins,finalIns,curso,finalCurso,edadMin,edadMax,callback){
+    const consulta = `
+    INSERT INTO escuela (nombre,categoria, inicio_inscripcion, fin_inscripcion, fecha_inicio,fecha_fin, edad_min, edad_max) VALUES
+    (?,?,?,?,?,?,?,?)
+    `;
+    const valores = [nombre, categoria,ins,finalIns,curso,finalCurso,edadMin,edadMax]
+    
+    conexion.query(consulta, valores, 
+        (error, result) => {
+            if (error) {
+            console.error('Error al insertar escuela:', error);
+            callback(false);
+        } else {
+            console.log('Escuela insertado correctamente')
+            callback(true);
+        }
+        });
+}
+
+async function getEscuela(id,callback){
+    const query = " SELECT  * FROM ESCUELA WHERE ID = ?";
+    const valores = [id];
+    conexion.query(query,valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results[0],null);
+        } else {
+            console.log('No hay escuelas');
+            callback(null,null);
+        }
+    });
+}
+
+async function updateEscuela(id,nombre, categoria,ins,finalIns,curso,finalCurso,edadMin,edadMax,callback){
+    const consulta = `
+    UPDATE escuela 
+    SET nombre = ?,categoria = ?, inicio_inscripcion = ?, fin_inscripcion = ?, fecha_inicio = ?,fecha_fin = ?, 
+    edad_min = ?, edad_max = ? 
+    WHERE id = ?
+    `;
+    const valores = [nombre, categoria,ins,finalIns,curso,finalCurso,edadMin,edadMax,id];
+    conexion.query(consulta, valores, 
+        (error, result) => {
+            if (error) {
+            console.error('Error al actualizar escuela:', error);
+            callback(false);
+        } else {
+            console.log('Escuela actualizada correctamente')
+            callback(true);
+        }
+        });
+
+}
+
+async function nombresPorEscuela(id,callback){
+    const query = `SELECT S.id, S.nombre,S.apellidos FROM USUARIO_ESCUELA U JOIN SOCIOS S ON U.usuario_id = S.id 
+WHERE U.escuela_id = ${id} AND U.eliminado = FALSE;`
+    const valores = [id];
+
+    conexion.query(query,valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results,null);
+        } else {
+            console.log('No hay escuelas');
+            callback(null,null);
+        }
+    });
+}
+
+async function totalEscuelas(callback){
+    let query  = 'SELECT COUNT(*) as cantidad FROM ESCUELA WHERE ELIMINADO = FALSE';
+    conexion.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results,null);
+        } else {
+            console.log('No hay escuelas');
+            callback(null,null);
+        }
+    });
+}
+
+async function sacarUser(idUser,idEscuela,callback){
+    let query = "UPDATE USUARIO_ESCUELA SET ELIMINADO = TRUE WHERE ESCUELA_ID = ? AND USUARIO_ID = ?"
+    let params = [idEscuela,idUser];
+    conexion.query(query,params, (error, results) => {
+        if (error) {
+            console.error('Error al insertar escuela:', error);
+            callback(false);
+        } else {
+            console.log('Escuela insertado correctamente')
+            callback(true);
+        }
+    });
+}
+
 
 
 module.exports = { loginCorrecto,compUser,compMail,registro,mailPorUsername,insertaToken,buscarToken,correoExiste,
     cambiarValidez, updatePassword,conectar,numSocios,devuelveSocios,existeSocio,insertSocio,getHijos,getSocio,updateSocio,
-    deleteSocio,idMasAlto};
+    deleteSocio,idMasAlto,getEscuelas,getCategorias,insertaEscuela,getEscuela,updateEscuela,deleteEscuela,getEscuelasPag,
+    nombresPorEscuela,totalEscuelas,sacarUser};
 

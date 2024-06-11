@@ -1,0 +1,303 @@
+body{
+    width: 100%;
+    height: 100%;
+    margin:0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 0;
+    
+}
+
+header{
+    background-color: red;
+    width: 100%;
+    height: 8vh;
+    margin: 0 auto;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    background-color: #D5E6F9;
+    z-index: 7;
+    
+}
+
+#titulo{
+    display: flex;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+}
+
+#titulo h3{
+    margin-left: 30px;
+    font-size: 2rem;
+    font-weight: light;
+}
+
+.navbar{
+    display: flex;
+
+}
+
+.link{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: #B5D8FF;
+}
+.link a{
+    color: black;
+    text-decoration: none;
+    padding: 1vw;
+    font-size: 1.05vw;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    
+}
+.link:nth-child(2){
+    background-color: #D9CEF9;
+}
+.link:last-child{
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+
+.link:hover{
+    cursor: pointer;
+    background-color: #ffc3d5;
+}
+
+.container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    flex-grow: 1; 
+    position: absolute; 
+    flex-direction: column;
+    background-image: linear-gradient(to bottom,#D9CEF9 0%, #FFFFFF 20% );
+    top: 8vh; 
+    left: 0;
+    right: 0;
+    bottom: 0; 
+
+}
+
+.main {
+    width: 70%; 
+    height: 80%; 
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.head {
+    width: 80%;
+    height: 12%;
+    border-bottom: 2px solid black;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-end; 
+    order:1;
+}
+
+.head h2 {
+    margin: 0; 
+    font-family: 'Gelasio', sans-serif;
+    font-size: 38px;
+    margin-left: 0.5vw;
+    font-weight: normal;
+}
+#paraBoton{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+#paraBoton button{
+    margin:0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00A42E;
+    border:none;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-top: 20px;
+    
+}
+
+#paraBoton button:hover{
+    cursor: pointer;
+    background-color: rgb(3, 182, 53);
+}
+
+#myGrid{
+    width: 88%;
+    margin-top: 3%;
+    order:2;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+    
+}
+.my-header-class .ag-header-cell-label {
+    text-align: center;
+    margin-left:30%;
+}
+
+.cat{
+    text-align: center;
+    margin-left:3%;
+}
+.fecha{
+    text-align: center;
+    margin-left:2%;
+}
+
+.editar , .eliminar{
+    width: 30px;
+    height: 30px;
+}
+.top{
+    background-color: #adcbee;
+    margin-right: 10%;
+    margin-left:20% ;
+}
+.top:hover{
+    cursor: pointer;
+    background-color: #dac9e9;
+}
+.bottom{
+    cursor: pointer;
+    background-color: #e98282
+}
+.bottom:hover{
+    background-color: #FFA6A6;
+}
+
+.top, .bottom {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* Asegúrate de que no haya padding que afecte el tamaño del botón */
+    margin-bottom: 10px; /* Añade espacio entre los botones */
+    width: 40px; /* Ajusta el tamaño según tus necesidades */
+    height: 40px; /* Ajusta el tamaño según tus necesidades */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aviso{
+    min-height: 100vh;
+    min-width: 100vh;
+    
+    z-index: 25;
+    align-items: center;
+    justify-content: center;
+    display:none;
+}
+.avisoVentana{
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    min-height:20vh;
+    background-color: rgb(255, 215, 215);
+    text-align: center;
+    border-radius: 5vh;
+    color: black;
+    font-family: 'Gelasio',sans-serif;
+    font-size: small;
+    border: solid black 1px;
+    justify-content: space-between;
+    
+    
+
+}
+.avisoVentana h1{
+text-align: center;
+} 
+
+.btnEliminar {
+    display: flex; 
+    justify-content: center;
+    align-items: end;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    
+    
+
+}
+
+.btnEliminar button {
+    font-family: 'Arial', sans-serif; 
+    padding: 10px 20px; 
+    min-height: 40px;
+    border: none; 
+    width: 20%;
+    height: 20%;
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.btnEliminar button:first-of-type {
+    background-color: #f44336; 
+    color: white; 
+}
+
+.btnEliminar button:first-of-type:hover {
+    background-color: #d32f2f;
+}
+
+.btnEliminar button:last-of-type {
+    margin-left: 4vh;
+    background-color: #4CAF50; 
+    color: white; 
+}
+
+.btnEliminar button:last-of-type:hover {
+    background-color: #388E3C; 
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+@keyframes slideOutToLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(150%);
+        opacity: 0;
+    }
+}
+
+.entra{
+    
+    animation: slideInFromRight 0.5s ease-in-out  forwards;
+}
+
+.sale{
+    animation: slideOutToLeft 0.5s ease-in-out  forwards;
+}

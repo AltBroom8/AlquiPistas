@@ -1,0 +1,127 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+body {
+    overflow: hidden;
+    background-image: linear-gradient(to bottom,#D9CEF9 0%, #FFFFFF 20% );
+}
+h1{
+    font-size: 2.5vw;
+}
+.pagina {
+    width: 30vw;
+    height: 80vh;
+    border-radius: 10%;
+    background-color: rgb(247, 233, 209);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 8px 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.campos {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.campos label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.campos input,
+.campos select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.campos input:focus,
+.campos select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.campos input[type="date"],
+.campos input[type="number"] {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .campos {
+        grid-template-columns: 1fr;
+    }
+}
+
+#btns {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#btns button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#rechazar {
+    background-color: #d14e3f;
+    color: white;
+    
+}
+
+#rechazar:hover {
+    background-color: #c0392b;
+}
+
+#rechazar:active {
+    transform: scale(0.98);
+}
+
+#confirmar {
+    background-color: #34dd7b;
+    color: white;
+    margin-left: 10%;
+}
+
+#confirmar:hover {
+    background-color: #27ae60;
+}
+
+#confirmar:active {
+    transform: scale(0.98);
+}
+
+.error{
+    background-color: rgb(255, 195, 195);
+}
+

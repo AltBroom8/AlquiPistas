@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="escuela.css" rel="stylesheet">
+    <link rel="stylesheet" href="/ag-grid.css">
+    <link rel="stylesheet" href="/ag-theme-alpine.css">
+    <script src="jquery.min.js"></script>
+    <title>Escuelas</title>
+</head>
+<body>
+    <div class="aviso">
+        <div class="avisoVentana">
+            <h1 id="prompt">¿Estás seguro de eliminar a menganito?</h1>
+            <div class="btnEliminar">
+                <button id="cancelarEliminar">Cancelar</button>
+                <button id="aceptarEliminar">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div id="titulo">
+            <h3>AlquiPistas</h3>
+        </div>
+        <nav class="navbar">
+            <div  class="link">
+                <a href="/socio">Usuarios</a>
+            </div>
+            <div class="link">
+                <a href="/escuela">Escuela</a>
+            </div>
+            <div class="link">
+                <a href="#">Usuarios por Escuela</a>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="main">
+            <div class="head">
+                <h2>Escuelas</h2>
+                <div id="paraBoton">
+                    <button id="addButton"><img src="/images/Add.png" alt="añadir un socio"></button>
+                </div>
+                
+            </div>
+            <div id="myGrid" class="ag-theme-alpine"></div>
+        </div>
+    </div>
+    <script src="ag-grid-community.noStyle.js"></script>
+    <script src="escuela.js"></script>
+</body>
+</html>

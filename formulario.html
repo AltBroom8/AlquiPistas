@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Escuela</title>
+    <link rel="stylesheet" href="formulario.css">
+</head>
+<body>
+    
+    <div class="pagina">
+        <div class="titulo">
+            <h1>Escuela</h1>
+        </div>
+        <div class="campos">
+            <label for="nombre">Título</label>
+            <input type="text" name="nombre">
+            <label for="categoria">Categoría</label>
+            <select name="categoria" id="categoria">
+            </select>
+            <label for="Ins">Inscripción</label>
+            <input type="date" name="Ins">
+            <label for="finIns">Fin de Inscripción</label>
+            <input type="date" name="finIns">
+            <label for="curso">Comienzo del Curso</label>
+            <input type="date" name="curso">
+            <label for="finCurso">Fin del Curso</label>
+            <input type="date" name="finCurso">
+            <label for="edadMin">Edad Mínima</label>
+            <input type="number" name="edadMin" min="0">
+            <label for="edadMax">Edad Máxima</label>
+            <input type="number" name="edadMax" min="0">
+        </div>
+        <div id="btns">
+            <button id="rechazar">Rechazar</button>
+            <button id="confirmar">Confirmar</button>
+        </div>
+        <div id="aviso" style="display:none; text-align: center;">
+            <h3 style="color:rgb(255, 111, 111)">La fecha de inicio debe ser anterior a la final, y la de inscripcion anterior a la del curso.</h3>
+        </div>
+        
+    </div>
+
+
+    <script src="formulario.js"></script>
+</body>
+</html>

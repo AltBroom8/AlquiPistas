@@ -139,6 +139,22 @@ app.get("/socio", (req, res) => {
     res.setHeader('Expires', '0');
     res.sendFile('./home.html', {root : __dirname});    
 })
+
+app.get("/escuela", (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.sendFile('./escuela.html', {root : __dirname});    
+})
+app.get("/union", (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.sendFile('./union.html', {root : __dirname});    
+})
+
+
+
 //Pagina de login
 app.get('/', (req, res) => {
     if(req.session.username){
@@ -216,6 +232,10 @@ app.get('/imagen', (req, res) => {
         }
     });
 });
+
+app.get('/form',(req, res)=>{
+    res.sendFile('./formulario.html', {root : __dirname});
+})
 
 
 //Si ninguna ruta es correcta, redirecciono a esta web
@@ -429,7 +449,93 @@ app.post('/uploadFile', (req, res) => {
     
 });
 
+app.post('/getEscuelas', (req, res) => {
+    database.getEscuelas((resultado) => {
+        console.log(resultado);
+        res.json(resultado);
+    })
+});
+app.post('/getEscuelasPag', (req, res) => {
+    let pag = req.body.pag;
+    database.getEscuelasPag(pag,(resultado) => {
+        console.log(resultado);
+        res.json(resultado);
+    })
+});
+app.post('/getCategorias', (req, res) => {
+    database.getCategorias((resultado) => {
+        res.json(resultado);
+    })
+});
 
+app.post('/nombresPorEscuela',(req,res) => {
+    let id = req.body.id;
+    database.nombresPorEscuela(id,(resultado) => {
+        res.json(resultado);
+    });
+});
+app.post('/totalEscuelas',(req,res) => {
+    database.totalEscuelas((resultado) => {
+        res.json(resultado);
+    });
+});
+
+app.post('/sacarUser', (req, res) => {
+    let idEscuela = req.body.idEscuela;
+    let idUser = req.body.idUser;
+    database.sacarUser(idUser,idEscuela,(resultado)=>{
+        res.json(resultado);
+    })
+})
+
+app.post('/insertEscuela',(req, res) => {
+    
+    let nombre = req.body.nombre;
+    let categoria = req.body.categoria;
+    let fecha1 = req.body.fecha1;
+    let fecha2 = req.body.fecha2;
+    let fecha3 = req.body.fecha3;
+    let fecha4 = req.body.fecha4;
+    let edadMin = req.body.edadMin;
+    let edadMax = req.body.edadMax;
+
+    database.insertaEscuela(nombre,categoria,fecha1,fecha2,fecha3,fecha4,edadMin,edadMax,(resultado) => {
+        res.json(resultado);
+    });
+})
+
+
+app.post('/getEscuelasPag', (req, res) => {
+    let id = req.body.id;
+    console.log(id);
+    database.getEscuela(id,(resultado) => {
+        res.json(resultado);
+    })
+});
+
+app.post('/updateEscuela', (req, res) => {
+    console.log(req.body);
+    let id = req.body.id;
+    let nombre = req.body.nombre;
+    let categoria = req.body.categoria;
+    let fecha1 = req.body.fecha1;
+    let fecha2 = req.body.fecha2;
+    let fecha3 = req.body.fecha3;
+    let fecha4 = req.body.fecha4;
+    let edadMin = req.body.edadMin;
+    let edadMax = req.body.edadMax;
+    database.updateEscuela(id,nombre,categoria,fecha1,fecha2,fecha3,fecha4,edadMin,edadMax,(resultado) => {
+        res.json(resultado);
+    });
+    
+})
+
+app.post('/eliminaEscuela', (req, res) => {
+    let id = req.body.id;
+    database.deleteEscuela(id,(resultado) => {
+        res.json(resultado);
+    });
+})
 
 //SI NO CONCUERDA LA URL INTRODUCIDA CON NINGUNA DE LAS ANTERIORES, LANZO UN ERROR
 app.use((req, res) => {
