@@ -45,6 +45,9 @@ ADD COLUMN username VARCHAR(255) NOT NULL
 ALTER TABLE Socios
 ADD COLUMN poblacion VARCHAR(255) NOT NULL
 
+ALTER TABLE Socios
+ADD CONSTRAINT unique_username UNIQUE (username);
+
 CREATE TABLE categoria (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100)
@@ -140,6 +143,8 @@ INSERT INTO categoria (nombre) VALUES ('Patinaje');
 INSERT INTO categoria (nombre) VALUES ('Bádminton');
 INSERT INTO categoria (nombre) VALUES ('Golf');
 INSERT INTO categoria (nombre) VALUES ('Surf');
+
+ALTER TABLE categoria CHANGE id idCategoria INT;
 
 
 INSERT INTO escuela (nombre, fecha_inicio, fecha_fin, inicio_inscripcion, fin_inscripcion, edad_min, edad_max, categoria)

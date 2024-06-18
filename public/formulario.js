@@ -35,7 +35,7 @@ async function rellenarSelect(){
     const selectCategoria = document.getElementById('categoria');
     listado.forEach(categoria => {
         const option = document.createElement('option');
-        option.value = categoria.id;
+        option.value = categoria.id_categoria;
         option.textContent = categoria.nombre_categoria;
         selectCategoria.appendChild(option);
     });
@@ -49,7 +49,8 @@ function formatDate(dateString) {
     return `${year}-${month}-${day}`;
 }
 function rellenarCampos(){
-    rellenarSelect();
+    
+    
     const titulo = document.querySelector('input[name="nombre"]');
     const inscripcion = document.querySelector('input[name="Ins"]');
     const finInscripcion = document.querySelector('input[name="finIns"]');
@@ -57,10 +58,9 @@ function rellenarCampos(){
     const finCurso = document.querySelector('input[name="finCurso"]');
     const edadMinima = document.querySelector('input[name="edadMin"]');
     const edadMaxima = document.querySelector('input[name="edadMax"]');
-
-    titulo.value = escuela.nombre;
-    document.getElementById('categoria').value= escuela.categoria;
     
+    // Llenar los campos con los valores de la escuela
+    titulo.value = escuela.nombre;
     inscripcion.value = formatDate(escuela.inicio_inscripcion);
     finInscripcion.value = formatDate(escuela.fin_inscripcion);
     comienzoCurso.value = formatDate(escuela.fecha_inicio);
@@ -68,6 +68,11 @@ function rellenarCampos(){
     edadMinima.value = escuela.edad_min;
     edadMaxima.value = escuela.edad_max;
 
+    // Asegurarse de que las opciones están llenas antes de asignar el valor
+    const selectCategoria = document.getElementById('categoria');
+    console.log("El número de categorías es " + escuela.categoria);
+    selectCategoria.value = escuela.categoria;
+    console.log("El número de select es "+ selectCategoria.value);
 }
 async function getEscuela(id){
     const mijson = {
@@ -173,7 +178,6 @@ function fechasValidas(startDate, endDate) {
     const end = new Date(endDate);
 
     if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        // Si alguna de las fechas no es válida
         return false;
     }
 

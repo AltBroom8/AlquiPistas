@@ -1,3 +1,4 @@
+
 //Import
 const mysql = require('mysql');
 //Configuracion de la conexion
@@ -436,6 +437,29 @@ async function getSocio(id, callback) {
         }
     });
 }
+async function getSocioPorUsername(username, callback) {
+
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE username = ?`;
+
+    const valores = [username];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results[0],null);
+        } else {
+            console.log('No hay socios');
+            callback(null,null);
+        }
+    });
+}
 
 async function updateSocio(id,username,nombre,apellidos,direccion,poblacion,cp,
     fnac,email,IBAN,socio,alta,fAlta,fBaja, callback) {
@@ -500,7 +524,7 @@ async function getEscuelas(callback){
     "E.inicio_inscripcion AS inicio_inscripcion, E.fin_inscripcion as fin_inscripcion, "+
     "E.edad_min as edad_min, E.edad_max as edad_max,E.categoria as categoria, "+
     "C.nombre_categoria as nombre_categoria "+
-    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.ID "+
+    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.id_categoria "+
     "WHERE ELIMINADO = FALSE";
 
     conexion.query(consulta, (error, results) => {
@@ -527,7 +551,7 @@ async function getEscuelasPag(actual,callback){
     "E.inicio_inscripcion AS inicio_inscripcion, E.fin_inscripcion as fin_inscripcion, "+
     "E.edad_min as edad_min, E.edad_max as edad_max,E.categoria as categoria, "+
     "C.nombre_categoria as nombre_categoria "+
-    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.ID "+
+    "FROM ESCUELA E JOIN CATEGORIA C ON E.CATEGORIA = C.id_categoria "+
     "WHERE ELIMINADO = FALSE "+
     `LIMIT ${(actual-1)*escuelaPerPage},${escuelaPerPage};`;
 
@@ -694,10 +718,167 @@ async function sacarUser(idUser,idEscuela,callback){
     });
 }
 
+async function registroMovil(nombre, usuario, email, callback) {
+    const maxIdQuery = "SELECT IFNULL(MAX(ID), 0) + 1 AS nextId FROM SOCIOS";
+
+    conexion.query(maxIdQuery, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(null,error);
+            return;
+        }
+        if (results.length > 0) {
+            
+            let nuevoId = results[0].nextId;
+            const query = `
+                INSERT INTO SOCIOS (ID, nombre, username, email,alta)
+                VALUES (?, ?, ?, ?,true)
+            `;
+            const valores = [nuevoId,nombre, usuario, email];
+
+            conexion.query(query, valores, (error, results) => {
+                if (error) {
+                    console.error('Error al insertar socio:', error);
+                    callback(false, null);
+                } else {
+                    console.log('Socio insertado correctamente');
+
+                    callback(true);
+                }
+            });
+
+        } else {
+            console.log('No hay escuelas');
+            callback(null,null);
+        }
+    });
+
+    
+}
+
+async function existeSocioPorUsername(username, callback) {
+
+    const consulta = `
+        SELECT * FROM socios 
+        WHERE username = ? and ALTA = TRUE`;
+
+    const valores = [username];
+
+    conexion.query(consulta, valores, (error, results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(-1);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(true);
+        } else {
+            console.log('No hay socios');
+            callback(false);
+        }
+    });
+}
+
+async function escuelasPorUsuario(username,callback){
+
+    let consulta = "SELECT * FROM usuario_escuela U JOIN ESCUELA E ON "+
+    "U.escuela_id = E.id WHERE U.usuario_id = (SELECT id FROM socios where username  = ?) AND U.eliminado = FALSE AND E.ELIMINADO = FALSE "+
+    "ORDER BY E.nombre ASC";
+    let valores = [username];
+
+    conexion.query(consulta,valores,(error,results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(-1);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results);
+        } else {
+            console.log('No hay escuelas');
+            callback(null);
+        }
+    })
+
+}
+
+async function quitarEscuela(idEscuela,idUser,callback){
+    let query = "DELETE FROM usuario_escuela WHERE escuela_id = ? AND usuario_id = ?";
+    let valores = [idEscuela,idUser];
+    conexion.query(query,valores,(error,results) => {
+        if (error) {
+            console.error('Error al eliminar escuela:', error);
+            callback(false);
+        } else {
+            console.log('Escuela eliminado correctamente')
+            callback(true);
+        }
+    });
+}
+
+async function listadoInscripciones(username,callback){
+    let query = "SELECT * FROM ESCUELA E join CATEGORIA C ON E.CATEGORIA = C.id_categoria WHERE E.ID NOT IN (SELECT escuela_id FROM usuario_escuela "+
+        "WHERE usuario_id = (SELECT id FROM SOCIOS WHERE USERNAME = ?))AND NOW()>= inicio_inscripcion "+
+        "AND NOW() <= fin_inscripcion AND ELIMINADO = FALSE ORDER BY nombre ASC";
+    let valores = [username];
+
+    conexion.query(query,valores,(error,results) => {
+        if (error) {
+            console.error('Error al realizar la consulta:', error);
+            callback(-1);
+            return;
+        }
+        if (results.length > 0) {
+            
+            callback(results);
+        } else {
+            console.log('No hay escuelas');
+            callback(null);
+        }
+    })
+}
+
+async function inscribeUser(username,escuela, callback){
+
+    let query = " INSERT INTO usuario_escuela (usuario_id,escuela_id,eliminado) VALUES"+
+    "((SELECT ID FROM SOCIOS WHERE USERNAME = ?),?,FALSE)";
+    let valores = [username,escuela];
+
+    conexion.query(query,valores,(error,results) => {
+        if (error) {
+            console.error('Error al inscribir usuario:', error);
+            callback(false);
+        } else {
+            console.log('Usuario inscrito correctamente')
+            callback(true);
+        }
+    });
+
+}
+
+async function updateSocioMovil(nombre,apellidos,cp,email,date,id,callback){
+    let query  = "UPDATE SOCIOS SET nombre = ?, apellidos = ?, codigoPostal = ?, email = ?, fNac = ?,alta = true WHERE id = ?";
+
+    let valores = [nombre,apellidos,cp,email,date,id];
+
+    conexion.query(query,valores,(error,results) => {
+        if (error) {
+            console.error('Error al actualizar socio:', error);
+            callback(false);
+        } else {
+            console.log('Socio actualizado correctamente')
+            callback(true);
+        }
+    });
+}
+
 
 
 module.exports = { loginCorrecto,compUser,compMail,registro,mailPorUsername,insertaToken,buscarToken,correoExiste,
     cambiarValidez, updatePassword,conectar,numSocios,devuelveSocios,existeSocio,insertSocio,getHijos,getSocio,updateSocio,
     deleteSocio,idMasAlto,getEscuelas,getCategorias,insertaEscuela,getEscuela,updateEscuela,deleteEscuela,getEscuelasPag,
-    nombresPorEscuela,totalEscuelas,sacarUser};
+    nombresPorEscuela,totalEscuelas,sacarUser,registroMovil,existeSocioPorUsername,escuelasPorUsuario,quitarEscuela,
+    listadoInscripciones,inscribeUser,getSocioPorUsername,updateSocioMovil};
 

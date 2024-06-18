@@ -298,7 +298,7 @@ btn4.addEventListener('click',async ()=>{
         try {
             await realizaRegistro(nombre.value, username.value, email.value, password.value);
             console.log('llegamos')
-            window.location.href = "/home";
+            window.location.href = "/socio";
         } catch (error) {
             console.error('Error durante el registro:', error);
         }

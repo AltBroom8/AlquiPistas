@@ -55,8 +55,10 @@ const setInfo = async (callback) => {
         }
     });
     oauth2Client.getAccessToken((err, token) => {
-        if (err)
-            return err;
+        if (err) {
+            console.error('Error al obtener el token de acceso:', err);
+            return callback(null); 
+        }
         accountTransport.auth.accessToken = token;
         callback(nodemailer.createTransport(accountTransport));
     });
@@ -87,35 +89,37 @@ async function enviaCorreo (email){
     const fechaCreacion = new Date();
     const duracionMinutos = 60;
     const fechaExpiracion = calcularDuracionToken(fechaCreacion, duracionMinutos);
-    await database.insertaToken(token,email,fechaExpiracion)
+    await database.insertaToken(token,email,fechaExpiracion);
     setInfo((transporter)=>{
+        
         const mailOptions = {
             from: 'AlquilerDePistasGines@gmail.com',
             to: email,
             subject: 'Restablecer Contraseña',
             text: `Hola ${username},
     
-    Recibimos una solicitud para restablecer la contraseña de tu cuenta en ${AplicacionNombre}. Si no hiciste esta solicitud, puedes ignorar este correo electrónico.
-    
-    Para restablecer tu contraseña, haz clic en el siguiente enlace o cópialo y pégalo en tu navegador:
-    
-    ${enlace}
-    
-    Este enlace expirará en ${duracionMinutos} minutos y solo puede ser utilizado una vez.
-    
-    Si tienes alguna pregunta o necesitas ayuda, no dudes en contactar con nuestro equipo de soporte.
-    
-    Gracias,
-    El equipo de ${AplicacionNombre}.`
+                Recibimos una solicitud para restablecer la contraseña de tu cuenta en ${AplicacionNombre}. Si no hiciste esta solicitud, puedes ignorar este correo electrónico.
+
+                Para restablecer tu contraseña, haz clic en el siguiente enlace o cópialo y pégalo en tu navegador:
+
+                ${enlace}
+
+                Este enlace expirará en ${duracionMinutos} minutos y solo puede ser utilizado una vez.
+
+                Si tienes alguna pregunta o necesitas ayuda, no dudes en contactar con nuestro equipo de soporte.
+
+                Gracias,
+                El equipo de ${AplicacionNombre}.`
         };
     
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-                console.error('Error al enviar el correo electrónico:', error);
-            } else {
-                console.log('Correo electrónico enviado.');
-            }
-        });
+    transporter.sendMail(mailOptions, function(error, info){
+        console.log("entra")
+        if (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+        } else {
+            console.log('Correo electrónico enviado.');
+        }
+    });
     })
     
 }
@@ -134,6 +138,9 @@ app.get('/home.html', (req, res) => {
     res.redirect('/error404');
 });
 app.get("/socio", (req, res) => {
+    if (!req.session.username) {
+        res.redirect('/');
+    }
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
@@ -141,12 +148,18 @@ app.get("/socio", (req, res) => {
 })
 
 app.get("/escuela", (req, res) => {
+    if (!req.session.username) {
+        res.redirect('/');
+    }
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     res.sendFile('./escuela.html', {root : __dirname});    
 })
 app.get("/union", (req, res) => {
+    if (!req.session.username) {
+        res.redirect('/');
+    }
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
@@ -392,6 +405,21 @@ app.post('/getSocio', (req, res) => {
         res.json(resultado);
     })
 });
+app.post('/getSocioPorUsername', (req, res) => {
+    let username = req.body.username;
+    database.getSocioPorUsername(username,(resultado,error) => {
+        res.json(resultado);
+    })
+});
+
+app.post('updateSocioMovil', (req, res) => {
+    let id = req.body.id;
+    let nombre = req.body.nombre;
+    let apellidos = req.body.apellidos;
+    let cp = req.body.cp;
+    let email = req.body.email;
+    let date = req.body.date;    
+})
 
 app.post('/updateSocio', (req, res) => {
 
@@ -455,6 +483,12 @@ app.post('/getEscuelas', (req, res) => {
         res.json(resultado);
     })
 });
+app.post('/getEscuela',(req,res) => {
+    let id = req.body.id;
+    database.getEscuela(id,(resultado) => {
+        res.json(resultado);
+    });    
+})
 app.post('/getEscuelasPag', (req, res) => {
     let pag = req.body.pag;
     database.getEscuelasPag(pag,(resultado) => {
@@ -535,6 +569,65 @@ app.post('/eliminaEscuela', (req, res) => {
     database.deleteEscuela(id,(resultado) => {
         res.json(resultado);
     });
+})
+
+app.post('/registroMovil', (req, res) => {
+    let nombre = req.body.nombre;
+    let username = req.body.username;
+    let email = req.body.email;    
+    database.registroMovil(nombre,username,email,(resultado)=>{
+        res.json(resultado);
+    })
+})
+
+app.post('/existeSocioPorUsername',(req,res)=>{
+    let username = req.body.username;
+    database.existeSocioPorUsername(username,(resultado)=>{ 
+        res.json(resultado);
+    });
+})
+
+app.post('/escuelasPorUsuario', (req, res)=>{
+    let username = req.body.username;
+    database.escuelasPorUsuario(username,(resultado)=>{
+        res.json(resultado);
+    })
+});
+
+app.post('/quitarEscuela',(req, res)=>{
+    let idEscuela = req.body.idEscuela;
+    let idUser = req.body.idUser;
+    database.quitarEscuela(idEscuela,idUser,(resultado)=>{
+        res.json(resultado);
+    })
+});
+
+app.post('/listadoInscripciones',(req, res)=>{
+    let username = req.body.username;
+    database.listadoInscripciones(username,(resultado)=>{
+        res.json(resultado);
+    });    
+})
+
+app.post('/inscribeUser',(req, res)=>{
+    let user = req.body.user;
+    let escuela = req.body.escuelaId;
+    database.inscribeUser(user,escuela,(resultado)=>{
+        res.json(resultado);
+    })    
+})
+
+app.post('/updateSocioMovil',(req, res)=>{
+    let nombre = req.body.nombre;
+    let apellidos = req.body.apellidos;
+    let cp = req.body.cp;
+    let email = req.body.email;
+    let date = req.body.date; 
+    let id = req.body.id;
+    database.updateSocioMovil(nombre,apellidos,cp,email,date,id,(resultado)=>{
+        res.json(resultado);
+    }); 
+    
 })
 
 //SI NO CONCUERDA LA URL INTRODUCIDA CON NINGUNA DE LAS ANTERIORES, LANZO UN ERROR
